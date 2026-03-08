@@ -8,7 +8,7 @@ G="\e[32m"
 Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
-$SCRIPT_DIR=$PWD
+SCRIPT_DIR=$PWD
 
 if [ $USERID -ne 0 ]; then
     echo -e "$R please run the script with root user access $N" | tee -a $LOGS_FILE
