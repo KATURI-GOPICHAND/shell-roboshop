@@ -5,7 +5,7 @@ AMI-ID="ami-0220d79f3f480ecf5"
 
 for instance in $@      # @-> we can send multiple arguments like mongodb,catalogue....etc
 do
-    Instnce_id= $( aws ec2 run-instances \
+    INSTANCE_ID= $( aws ec2 run-instances \
     --image-id $AMI_ID \
     --instance-type "t3.micro" \
     --security-group-ids $SG_ID \
@@ -13,10 +13,10 @@ do
     --query 'Instances[0].InstanceId' \
     --output text )
 
-    if [ $Instnce_id == "frontend"]; then
+    if [ $Instnce == "frontend"]; then
         IP=$(
             aws ec2 describe-instances \
-            --instance-ids $Instnce_id \
+            --instance-ids $INSTANCE_ID \
             --query 'Reservations[].Instances[].PublicIpAddress' \
             --output text
 
@@ -24,12 +24,12 @@ do
         else
             IP=$(
             aws ec2 describe-instances \
-            --instance-ids $Instnce_id \
+            --instance-ids $INSTANCE_ID \
             --query 'Reservations[].Instances[].PrivateIpAddress' \
             --output text
             )
         fi
-
+        echo "IP address: $IP"
 done
 
 
