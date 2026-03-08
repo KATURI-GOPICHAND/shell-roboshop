@@ -22,7 +22,7 @@ do
             --query 'Reservations[].Instances[].PublicIpAddress' \
             --output text
         )
-        RECORD_NAME="$$DOMAIN_NAME"   # 88sdaws.fun
+        RECORD_NAME="$DOMAIN_NAME"   # 88sdaws.fun
         else
             IP=$(
             aws ec2 describe-instances \
@@ -44,12 +44,12 @@ do
          {
             "Action": "UPSERT",
             "ResourceRecordSet": {
-            "Name": '$RECORD_NAME',
+            "Name": "'$RECORD_NAME'",
             "Type": "A",
             "TTL": 1,
             "ResourceRecords": [
              {
-                "Value": '$IP'
+                "Value": "'$IP'"
             }
             ]
         }
