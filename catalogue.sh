@@ -40,7 +40,7 @@ if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOGS_FILE
     VALIDATE $? "Creating System user"
 else
-    echo -e "Roboshop user already exist....$Y Skipping $N"
+    echo -e "Roboshop user already exist....$Y SKIPPING $N"
 fi
 
 mkdir -p /app 
@@ -48,3 +48,20 @@ VALIDATE $? "Creating app directory"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOGS_FILE
 VALIDATE $? "Downloading catalogue code"
+
+cd /app 
+VALIDATE $? "Moving to app directory"
+
+unzip /tmp/catalogue.zip
+VALIDATE $? "Unzip catalogue code"
+
+npm install 
+VALIDATE $? "Installing dependencies"
+
+cp catalogue.service /etc/systemd/system/catalogue.service
+VALIDATE $? "Created systemctl service"
+
+systemctl daemon-reload
+systemctl enable catalogue 
+systemctl start catalogue
+VALIDATE $? "Start and enabling catalogue"
